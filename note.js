@@ -1,8 +1,68 @@
+
+let SWITCHERS = [{
+	id: 1,
+	color: "#f3f56c",
+	isActive: true
+},{
+
+	id: 2,
+	color: "#f26b61",
+	isActive: false
+},{
+	id: 3,
+	color: "#84c5f0",
+	isActive: false
+},{
+	id: 4,
+	color: "#7af088",
+	isActive: false
+},{
+	id: 5,
+	color: "#c184f0",
+	isActive: false
+}];
+
+let ColorSwitcher = React.createClass({
+	setActive: function(event){
+		this.props.setActive(this.props.color);
+		this.props.onColorChange(this.props.color)
+	},
+
+	render: function(){
+		let styleSwitcher = {backgroundColor: this.props.color};
+		this.props.isActive === false ? styleSwitcher.color = "transparent" : styleSwitcher.color = "black";
+		return <div className = "color-switcher" style = {styleSwitcher} onClick = {this.setActive}> ✔ </div>;
+	}
+});
+
+let ColorPanel = React.createClass({
+	setActive: function(color){
+		for(let i = 0; i < SWITCHERS.length; i++){
+			SWITCHERS[i].color == color ? SWITCHERS[i].isActive = true : SWITCHERS[i].isActive = false;
+		}
+	},
+
+	render: function(){
+		return <div className = "color-panel">
+			{
+				SWITCHERS.map((switcher) => {
+					return <ColorSwitcher key = {switcher.id}
+										  isActive = {switcher.isActive} 
+										  color = {switcher.color} 
+										  onColorChange = {this.props.onColorChange}
+										  setActive = {this.setActive}/>;
+				})
+			}
+		</div>
+	}
+});
+
+
 let Note = React.createClass({
     render: function() {
-    	let style = {backgroundColor: this.props.color}
+    	let styleNote = {backgroundColor: this.props.color}
         return (
-            <div className = "note" style = {style}>
+            <div className = "note" style = {styleNote}>
             	{this.props.children}
             	<span className = "delete-note-btn" onClick = {this.props.onDelete}> × </span>
             </div>
@@ -13,7 +73,8 @@ let Note = React.createClass({
 let NoteEditor = React.createClass({
 	getInitialState: function(){
 		return {
-			text: ""
+			text: "", 
+			color: "#f3f56c"
 		};
 	},
 
@@ -24,11 +85,17 @@ let NoteEditor = React.createClass({
 		});
 	},
 
+	handleColorChange: function(value){
+		this.setState({
+			color: value
+		});
+	},
+
 	//func that create new note and causes callback
 	handleNodeAdd:function(){
 		let newNote = {
 			text: this.state.text,
-			color: "yellow",
+			color: this.state.color,
 			id: Date.now()
 		}
 		this.props.onNoteAdd(newNote);
@@ -46,7 +113,10 @@ let NoteEditor = React.createClass({
             	 rows = {7} 
             	 value = {this.state.text}
             	 onChange = {this.handleTextChange}/>
-            	<button className = "add-note-btn" onClick = {this.handleNodeAdd}>Add</button>
+            	 <div className = "buttons-panel">
+		         <ColorPanel onColorChange = {this.handleColorChange}/>
+            	 <button className = "add-note-btn" onClick = {this.handleNodeAdd}>Add</button>
+            	 </div>
             </div>
         );
     }
