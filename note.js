@@ -1,4 +1,3 @@
-
 let SWITCHERS = [{
 	id: 1,
 	color: "#f3f56c",
@@ -23,44 +22,46 @@ let SWITCHERS = [{
 }];
 
 let ColorSwitcher = React.createClass({
-	setActive: function(event){
+	//func that transfer color to change color of note and set active switcher
+	setActive(){
 		this.props.setActive(this.props.color);
 		this.props.onColorChange(this.props.color)
 	},
 
-	render: function(){
+	render(){
 		let styleSwitcher = {backgroundColor: this.props.color};
-		this.props.isActive === false ? styleSwitcher.color = "transparent" : styleSwitcher.color = "black";
+		styleSwitcher.color = this.props.isActive === false ? "transparent" : "black";
 		return <div className = "color-switcher" style = {styleSwitcher} onClick = {this.setActive}> ✔ </div>;
 	}
 });
 
 let ColorPanel = React.createClass({
-	setActive: function(color){
-		for(let i = 0; i < SWITCHERS.length; i++){
-			SWITCHERS[i].color == color ? SWITCHERS[i].isActive = true : SWITCHERS[i].isActive = false;
+	//func to activate switcher
+	setActive(color){
+		for (let i = 0; i < SWITCHERS.length; i++){
+			SWITCHERS[i].isActive = SWITCHERS[i].color == color ?  true : false;
 		}
 	},
 
-	render: function(){
-		return <div className = "color-panel">
+	render(){
+		return (<div className = "color-panel">
 			{
 				SWITCHERS.map((switcher) => {
-					return <ColorSwitcher key = {switcher.id}
+					return (<ColorSwitcher key = {switcher.id}
 										  isActive = {switcher.isActive} 
 										  color = {switcher.color} 
 										  onColorChange = {this.props.onColorChange}
-										  setActive = {this.setActive}/>;
+										  setActive = {this.setActive}/>);
 				})
 			}
-		</div>
+		</div>);
 	}
 });
 
 
 let Note = React.createClass({
-    render: function() {
-    	let styleNote = {backgroundColor: this.props.color}
+    render(){
+    	let styleNote = {backgroundColor: this.props.color};
         return (
             <div className = "note" style = {styleNote}>
             	{this.props.children}
@@ -71,48 +72,44 @@ let Note = React.createClass({
 });
 
 let NoteEditor = React.createClass({
-	getInitialState: function(){
+	getInitialState(){
 		return {
 			text: "", 
 			color: "#f3f56c"
 		};
 	},
 
-	//func for changing state of component
-	handleTextChange: function(event){
-		this.setState({
-			text: event.target.value
-		});
+	//func for changing state text of component
+	handleTextChange(event){
+		this.setState({text: event.target.value});		
 	},
 
-	handleColorChange: function(value){
-		this.setState({
-			color: value
-		});
+	//func for changing color of note
+	handleColorChange(value){
+		this.setState({color: value});
 	},
 
 	//func that create new note and causes callback
-	handleNodeAdd:function(){
+	handleNodeAdd(){
 		let newNote = {
 			text: this.state.text,
 			color: this.state.color,
 			id: Date.now()
-		}
+		};
+
 		this.props.onNoteAdd(newNote);
 		//del text from area when note added
-		this.setState({
-			text: ""
-		});
+		this.setState({text: ""});
 	},
-    render: function() {
+
+    render(){
         return (
             <div className = "note-editor">
-            	<textarea
-            	 className = "note-textarea"
-            	 placeholder = "Enter your note here..." 
-            	 rows = {7} 
-            	 value = {this.state.text}
-            	 onChange = {this.handleTextChange}/>
+            	<textarea className = "note-textarea"
+		            	 placeholder = "Enter your note here..." 
+		            	 rows = {7} 
+		            	 value = {this.state.text}
+		            	 onChange = {this.handleTextChange}/>
             	 <div className = "buttons-panel">
 		         <ColorPanel onColorChange = {this.handleColorChange}/>
             	 <button className = "add-note-btn" onClick = {this.handleNodeAdd}>Add</button>
@@ -124,30 +121,29 @@ let NoteEditor = React.createClass({
 
 let NotesGrid = React.createClass({
 	//initializing the Masonry so that the blocks are laid with bricks 
-	componentDidMount: function(){
+	componentDidMount(){
 		this.msnry = new Masonry( this.refs.notesGrid, {
   			itemSelector: '.note',
   			columnWidth: 200,
   			gutter: 10
 		});
-
 	},
 
 	//compare the array before and after adding note, rebuild the masonry
-	componentDidUpdate: function(prevProps){
-		if(this.props.notes.length !== prevProps.notes.length){
+	componentDidUpdate(prevProps){
+		if (this.props.notes.length !== prevProps.notes.length){
 			this.msnry.reloadItems();
 			this.msnry.layout();
 		}
 	},
 
-    render: function() {
+    render() {
     	let onNoteDelete = this.props.onNoteDelete;
         return (
             <div className = "notes-grid" ref = "notesGrid">
                 {
                 	//passing parameters for each note
-                    this.props.notes.map(function(note){
+                    this.props.notes.map((note) => {
                         return (
                             <Note
                                 key={note.id}
@@ -163,69 +159,111 @@ let NotesGrid = React.createClass({
     }
 });
 
+let  SearchField = React.createClass({
+	getInitialState(){
+		return{
+			searchQuery: ""
+		};
+	},
+
+	//func to change search query
+	handleSearchQueryChange(event){
+		this.setState({searchQuery: event.target.value});
+	},
+
+	_handleKeyDown(event) {
+		if (event.key === 'Enter') this.props.onSearch(this.state.searchQuery);
+	},
+
+	render(){
+		return (<div className = "search-field">
+					<input className = "search-input"
+						   type = "text"
+						   value = {this.state.searchQuery}
+						   placeholder = "Search..." 
+						   onKeyDown = {this._handleKeyDown} 
+						   onChange = {this.handleSearchQueryChange}/>
+					<div className = "search-icon" 
+						 onClick = {() => this.props.onSearch(this.state.searchQuery)}>🔍</div>
+				</div>);
+	}
+});
+
 let NotesApp = React.createClass({
-    getInitialState: function() {
+    getInitialState(){
         return {
-            notes: []
+            notes: [],
+            displayedNotes: []
         };
     },
 
-    //when component updated, update localStorage 
-    componentDidUpdate: function(){
+    //when component updated - update localStorage 
+    componentDidUpdate(){
     	this._updateLocalStorage();
     },
 
     //when component mount takes notes from localStorage
-    componentDidMount: function(){
+    componentDidMount(){	
     	let localNotes = JSON.parse(localStorage.getItem('notes'));
-    	if(localNotes){
+    	if (localNotes){
     		this.setState({
-    			notes: localNotes
+    			notes: localNotes,
+    			displayedNotes: localNotes,
+    			searchQuery: ""
     		});
     	}
-
     },
 
     //func for deleting note
-    handleNoteDelete: function(note){
+    handleNoteDelete(note){
     	let noteId = note.id;
     	let newNotes = this.state.notes.filter(function(note){
     		return note.id !== noteId;
     	});
+
+    	//callback need to search notes, when note deleted
     	this.setState({
     		notes: newNotes
-    	});
+    	}, () => this.handleNoteSearch(this.state.searchQuery));
     },
 
     //func that add new note to array
-    handleNoteAdd: function(newNote){
+    handleNoteAdd(newNote){
     	let newNotes = this.state.notes.slice();
     	newNotes.unshift(newNote);
+
+    	//callback need to search notes, when note added
     	this.setState({
     		notes: newNotes
-    	});
-
+    	}, () => this.handleNoteSearch(this.state.searchQuery));
     },
 
+    //func for searching notes
+    handleNoteSearch(searchQuery){ 
+    	let displayedNotes = this.state.notes.filter(function(note){ 
+	    	return note.text.toLowerCase().indexOf(searchQuery.toLowerCase()) !== -1;
+	    });
+
+	    this.setState({displayedNotes,searchQuery});
+      },
+
     //write notes to localStorage
-    _updateLocalStorage: function(){
+    _updateLocalStorage(){
     	let notes = JSON.stringify(this.state.notes);
     	localStorage.setItem('notes', notes);
     },
 
-    render: function() {
+    render() {
         return (
             <div className = "notes-app">
             <h1 className = "app-header">NotesApp</h1>
-                <NoteEditor onNoteAdd = {this.handleNoteAdd}/>
-                <NotesGrid notes={this.state.notes} onNoteDelete = {this.handleNoteDelete}/>
+            <SearchField onSearch = {this.handleNoteSearch}/>
+            <NoteEditor onNoteAdd = {this.handleNoteAdd}/>
+            <NotesGrid notes = {this.state.displayedNotes} onNoteDelete = {this.handleNoteDelete}/>
             </div>
         );
     },
 
 });
 
-ReactDOM.render(
-    <NotesApp />,
-    document.getElementById('content')
-	);
+ReactDOM.render(<NotesApp />, document.getElementById('content'));
