@@ -4,9 +4,15 @@ import '../style/notes-grid.css';
 import Note from './Note.js';
 
 export default class NotesGrid extends Component {
+    constructor(props){
+        super(props);
+
+        this.notesGrid = React.createRef();
+    }
+
     //initializing the Masonry so that the blocks are laid with bricks 
     componentDidMount() {
-        this.msnry = new Masonry(this.refs.notesGrid, {
+        this.msnry = new Masonry(this.notesGrid.current, {
             itemSelector: '.note',
             columnWidth: 200,
             gutter: 10
@@ -24,7 +30,7 @@ export default class NotesGrid extends Component {
     render() {
         let onNoteDelete = this.props.onNoteDelete;
         return (
-            <div className="notes-grid" ref="notesGrid">
+            <div className="notes-grid" ref={this.notesGrid}>
                 {
                     //passing parameters for each note
                     this.props.notes.map((note) => {
