@@ -22,3 +22,7 @@ A project created to acquire new skills and abilities.
 ### `yarn devserver`
 
 Launches a local server for development.
+
+## Screenshots
+
+![Screenshot](screenshots/screenshot-1.png?raw=true "Screenshot")
