@@ -12,12 +12,6 @@ A project created to acquire new skills and abilities.
 -   **JS**
 -   **HTML5**
 
-## Available Scripts
-
-### `yarn devserver`
-
-Launches a local server for development.
-
 ## Screenshots
 
 ![Screenshot](./public/screenshots/screenshot-1.png?raw=true 'Screenshot')
