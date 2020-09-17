@@ -5,9 +5,11 @@ export default class Note extends Component {
     render() {
         let styleNote = { backgroundColor: this.props.color };
         return (
-            <div className="note" style={styleNote}>
+            <div className='note' style={styleNote}>
                 {this.props.children}
-                <span className="delete-note-btn" onClick={this.props.onDelete}> × </span>
+                <span className='delete-note-btn' onClick={this.props.onDelete}>
+                    ×
+                </span>
             </div>
         );
     }

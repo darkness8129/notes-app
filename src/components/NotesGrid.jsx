@@ -1,21 +1,21 @@
 import React, { Component } from 'react';
 import Masonry from 'masonry-layout';
 import '../style/notes-grid.css';
-import Note from './Note.js';
+import Note from './Note';
 
 export default class NotesGrid extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.notesGrid = React.createRef();
     }
 
-    //initializing the Masonry so that the blocks are laid with bricks 
+    //initializing the Masonry so that the blocks are laid with bricks
     componentDidMount() {
         this.msnry = new Masonry(this.notesGrid.current, {
             itemSelector: '.note',
             columnWidth: 200,
-            gutter: 10
+            gutter: 10,
         });
     }
 
@@ -30,7 +30,7 @@ export default class NotesGrid extends Component {
     render() {
         let onNoteDelete = this.props.onNoteDelete;
         return (
-            <div className="notes-grid" ref={this.notesGrid}>
+            <div className='notes-grid' ref={this.notesGrid}>
                 {
                     //passing parameters for each note
                     this.props.notes.map((note) => {
@@ -38,7 +38,8 @@ export default class NotesGrid extends Component {
                             <Note
                                 key={note.id}
                                 color={note.color}
-                                onDelete={onNoteDelete.bind(null, note)}>
+                                onDelete={onNoteDelete.bind(null, note)}
+                            >
                                 {note.text}
                             </Note>
                         );

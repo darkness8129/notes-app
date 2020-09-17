@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import '../style/notes-app.css';
-import SearchField from './SearchField.js';
-import NoteEditor from './NoteEditor.js';
-import NotesGrid from './NotesGrid.js';
+import SearchField from './SearchField';
+import NoteEditor from './NoteEditor';
+import NotesGrid from './NotesGrid';
 
 export default class NotesApp extends Component {
     constructor(props) {
@@ -10,7 +10,8 @@ export default class NotesApp extends Component {
 
         this.state = {
             notes: [],
-            displayedNotes: []
+            displayedNotes: [],
+            searchQuery: '',
         };
 
         this.handleNoteDelete = this.handleNoteDelete.bind(this);
@@ -19,7 +20,7 @@ export default class NotesApp extends Component {
         this._updateLocalStorage = this._updateLocalStorage.bind(this);
     }
 
-    //when component updated - update localStorage 
+    //when component updated - update localStorage
     componentDidUpdate() {
         this._updateLocalStorage();
     }
@@ -31,7 +32,6 @@ export default class NotesApp extends Component {
             this.setState({
                 notes: localNotes,
                 displayedNotes: localNotes,
-                searchQuery: ""
             });
         }
     }
@@ -44,9 +44,12 @@ export default class NotesApp extends Component {
         });
 
         //callback need to search notes, when note deleted
-        this.setState({
-            notes: newNotes
-        }, () => this.handleNoteSearch(this.state.searchQuery));
+        this.setState(
+            {
+                notes: newNotes,
+            },
+            () => this.handleNoteSearch(this.state.searchQuery)
+        );
     }
 
     //func that add new note to array
@@ -55,15 +58,22 @@ export default class NotesApp extends Component {
         newNotes.unshift(newNote);
 
         //callback need to search notes, when note added
-        this.setState({
-            notes: newNotes
-        }, () => this.handleNoteSearch(this.state.searchQuery));
+        this.setState(
+            {
+                notes: newNotes,
+            },
+            () => this.handleNoteSearch(this.state.searchQuery)
+        );
     }
 
     //func for searching notes
     handleNoteSearch(searchQuery) {
+        console.log(this.state.notes);
         let displayedNotes = this.state.notes.filter(function (note) {
-            return note.text.toLowerCase().indexOf(searchQuery.toLowerCase()) !== -1;
+            return (
+                note.text.toLowerCase().indexOf(searchQuery.toLowerCase()) !==
+                -1
+            );
         });
 
         this.setState({ displayedNotes, searchQuery });
@@ -77,13 +87,15 @@ export default class NotesApp extends Component {
 
     render() {
         return (
-            <div className="notes-app">
-                <h1 className="app-header">NotesApp</h1>
+            <div className='notes-app'>
+                <h1 className='app-header'>NotesApp</h1>
                 <SearchField onSearch={this.handleNoteSearch} />
                 <NoteEditor onNoteAdd={this.handleNoteAdd} />
-                <NotesGrid notes={this.state.displayedNotes} onNoteDelete={this.handleNoteDelete} />
+                <NotesGrid
+                    notes={this.state.displayedNotes}
+                    onNoteDelete={this.handleNoteDelete}
+                />
             </div>
         );
     }
-
 }

@@ -8,7 +8,7 @@ body {
     background-color: #eaeaea;
 }
 
-#content {
+#root {
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
@@ -23,4 +23,3 @@ body {
     -ms-flex-align: center;
     align-items: center;
 }
-

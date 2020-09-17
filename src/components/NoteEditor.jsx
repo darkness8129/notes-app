@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import '../style/note-editor.css';
-import ColorPanel from './ColorPanel.js';
+import ColorPanel from './ColorPanel';
 
 export default class NoteEditor extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            text: "",
-            color: "#f3f56c"
+            text: '',
+            color: '#f3f56c',
         };
 
         this.handleTextChange = this.handleTextChange.bind(this);
@@ -31,25 +31,32 @@ export default class NoteEditor extends Component {
         let newNote = {
             text: this.state.text,
             color: this.state.color,
-            id: Date.now()
+            id: Date.now(),
         };
 
         this.props.onNoteAdd(newNote);
         //del text from area when note added
-        this.setState({ text: "" });
+        this.setState({ text: '' });
     }
 
     render() {
         return (
-            <div className="note-editor">
-                <textarea className="note-textarea"
-                    placeholder="Enter your note here..."
+            <div className='note-editor'>
+                <textarea
+                    className='note-textarea'
+                    placeholder='Enter your note here...'
                     rows={7}
                     value={this.state.text}
-                    onChange={this.handleTextChange} />
-                <div className="buttons-panel">
+                    onChange={this.handleTextChange}
+                />
+                <div className='buttons-panel'>
                     <ColorPanel onColorChange={this.handleColorChange} />
-                    <button className="add-note-btn" onClick={this.handleNodeAdd}>Add</button>
+                    <button
+                        className='add-note-btn'
+                        onClick={this.handleNodeAdd}
+                    >
+                        Add
+                    </button>
                 </div>
             </div>
         );

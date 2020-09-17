@@ -16,7 +16,17 @@ export default class ColorSwitcher extends Component {
 
     render() {
         let styleSwitcher = { backgroundColor: this.props.color };
-        styleSwitcher.color = this.props.isActive === false ? "transparent" : "black";
-        return <div className="color-switcher" style={styleSwitcher} onClick={this.setActive}> ✔ </div>;
+        styleSwitcher.color =
+            this.props.isActive === false ? 'transparent' : 'black';
+        return (
+            <div
+                className='color-switcher'
+                style={styleSwitcher}
+                onClick={this.setActive}
+            >
+                {' '}
+                ✔{' '}
+            </div>
+        );
     }
 }
