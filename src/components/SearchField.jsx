@@ -23,11 +23,10 @@ const SearchInput = styled.input.attrs((props) => ({
     border-radius: 20px;
 `;
 
-const SearchIcon = styled.div`
+const SearchIcon = styled.span`
     position: absolute;
     left: 5px;
     top: 7px;
-    cursor: pointer;
 `;
 
 export default class SearchField extends Component {
@@ -38,18 +37,14 @@ export default class SearchField extends Component {
             searchQuery: '',
         };
 
-        this.handleSearchQueryChange = this.handleSearchQueryChange.bind(this);
-        this._handleKeyDown = this._handleKeyDown.bind(this);
+        this.handleSearch = this.handleSearch.bind(this);
     }
 
-    //func to change search query
-    handleSearchQueryChange(event) {
-        this.setState({ searchQuery: event.target.value });
-    }
-
-    //when user press 'enter'
-    _handleKeyDown(event) {
-        if (event.key === 'Enter') this.props.onSearch(this.state.searchQuery);
+    //func handle searching
+    handleSearch(event) {
+        this.setState({ searchQuery: event.target.value }, () => {
+            this.props.onSearch(this.state.searchQuery);
+        });
     }
 
     render() {
@@ -57,14 +52,9 @@ export default class SearchField extends Component {
             <StyledSearchField>
                 <SearchInput
                     value={this.state.searchQuery}
-                    onKeyDown={this._handleKeyDown}
-                    onChange={this.handleSearchQueryChange}
+                    onChange={this.handleSearch}
                 />
-                <SearchIcon
-                    onClick={() => this.props.onSearch(this.state.searchQuery)}
-                >
-                    🔍
-                </SearchIcon>
+                <SearchIcon>🔍</SearchIcon>
             </StyledSearchField>
         );
     }

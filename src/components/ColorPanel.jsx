@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
+import styled from 'styled-components';
 import ColorSwitcher from './ColorSwitcher';
+
+const StyledColorPanel = styled.div`
+    display: flex;
+`;
 
 let SWITCHERS = [
     {
@@ -45,7 +50,7 @@ export default class ColorPanel extends Component {
 
     render() {
         return (
-            <div>
+            <StyledColorPanel>
                 {SWITCHERS.map((switcher) => {
                     return (
                         <ColorSwitcher
@@ -57,7 +62,7 @@ export default class ColorPanel extends Component {
                         />
                     );
                 })}
-            </div>
+            </StyledColorPanel>
         );
     }
 }

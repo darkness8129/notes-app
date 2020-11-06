@@ -37,7 +37,6 @@ const AddNoteBtn = styled.button`
 
 export default class ButtonsPanel extends Component {
     render() {
-        debugger;
         return (
             <StyledButtonsPanel>
                 <ColorPanel onColorChange={this.props.handleColorChange} />

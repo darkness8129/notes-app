@@ -19,6 +19,7 @@ export default class NotesGrid extends Component {
         this.msnry = new Masonry(this.notesGrid.current, {
             itemSelector: '.note',
             columnWidth: 200,
+            fitWidth: true,
             gutter: 10,
         });
     }

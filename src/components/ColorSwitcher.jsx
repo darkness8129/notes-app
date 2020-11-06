@@ -10,7 +10,6 @@ const StyledColorSwitcher = styled.div`
     text-align: center;
     cursor: pointer;
     background-color: ${(props) => props.backgroundColor};
-    color: ${(props) => (props.isActive ? 'black' : 'transparent')};
 `;
 
 export default class ColorSwitcher extends Component {
@@ -31,9 +30,8 @@ export default class ColorSwitcher extends Component {
             <StyledColorSwitcher
                 onClick={this.setActive}
                 backgroundColor={this.props.color}
-                isActive={this.props.isActive}
             >
-                ✔
+                {this.props.isActive && <span>✔</span>}
             </StyledColorSwitcher>
         );
     }
