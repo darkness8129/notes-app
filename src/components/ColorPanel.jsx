@@ -45,7 +45,7 @@ export default class ColorPanel extends Component {
 
     render() {
         return (
-            <div className='color-panel'>
+            <div>
                 {SWITCHERS.map((switcher) => {
                     return (
                         <ColorSwitcher

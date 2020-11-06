@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import Masonry from 'masonry-layout';
-import '../style/notes-grid.css';
 import Note from './Note';
+import styled from 'styled-components';
+
+const StyledNotesGrid = styled.div`
+    margin: 0 auto;
+`;
 
 export default class NotesGrid extends Component {
     constructor(props) {
@@ -30,7 +34,7 @@ export default class NotesGrid extends Component {
     render() {
         let onNoteDelete = this.props.onNoteDelete;
         return (
-            <div className='notes-grid' ref={this.notesGrid}>
+            <StyledNotesGrid ref={this.notesGrid}>
                 {
                     //passing parameters for each note
                     this.props.notes.map((note) => {
@@ -45,7 +49,7 @@ export default class NotesGrid extends Component {
                         );
                     })
                 }
-            </div>
+            </StyledNotesGrid>
         );
     }
 }

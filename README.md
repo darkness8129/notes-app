@@ -7,6 +7,7 @@ A project created to acquire new skills and abilities.
 ## In Project Used:
 
 -   **React**
+-   **Styled Components**
 -   **Masonry**
 -   **CSS3**
 -   **JS**

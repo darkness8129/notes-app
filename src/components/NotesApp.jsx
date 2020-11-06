@@ -1,8 +1,20 @@
 import React, { Component } from 'react';
-import '../style/notes-app.css';
 import SearchField from './SearchField';
-import NoteEditor from './NoteEditor';
+import NoteEditor from './NoteEditor/NoteEditor';
 import NotesGrid from './NotesGrid';
+import styled from 'styled-components';
+
+const StyledNotesApp = styled.div`
+    max-width: 960px;
+    width: 100%;
+`;
+
+const Title = styled.h1`
+    text-align: center;
+    font-weight: 500;
+    color: grey;
+    text-shadow: 0px 2px 3px rgba(255, 255, 255, 0.5);
+`;
 
 export default class NotesApp extends Component {
     constructor(props) {
@@ -68,7 +80,6 @@ export default class NotesApp extends Component {
 
     //func for searching notes
     handleNoteSearch(searchQuery) {
-        console.log(this.state.notes);
         let displayedNotes = this.state.notes.filter(function (note) {
             return (
                 note.text.toLowerCase().indexOf(searchQuery.toLowerCase()) !==
@@ -87,15 +98,15 @@ export default class NotesApp extends Component {
 
     render() {
         return (
-            <div className='notes-app'>
-                <h1 className='app-header'>NotesApp</h1>
+            <StyledNotesApp>
+                <Title>NotesApp</Title>
                 <SearchField onSearch={this.handleNoteSearch} />
                 <NoteEditor onNoteAdd={this.handleNoteAdd} />
                 <NotesGrid
                     notes={this.state.displayedNotes}
                     onNoteDelete={this.handleNoteDelete}
                 />
-            </div>
+            </StyledNotesApp>
         );
     }
 }

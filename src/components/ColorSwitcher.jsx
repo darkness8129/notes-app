@@ -1,5 +1,17 @@
 import React, { Component } from 'react';
-import '../style/color-switcher.css';
+import styled from 'styled-components';
+
+const StyledColorSwitcher = styled.div`
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    margin: 5px;
+    text-align: center;
+    cursor: pointer;
+    background-color: ${(props) => props.backgroundColor};
+    color: ${(props) => (props.isActive ? 'black' : 'transparent')};
+`;
 
 export default class ColorSwitcher extends Component {
     constructor(props) {
@@ -15,18 +27,14 @@ export default class ColorSwitcher extends Component {
     }
 
     render() {
-        let styleSwitcher = { backgroundColor: this.props.color };
-        styleSwitcher.color =
-            this.props.isActive === false ? 'transparent' : 'black';
         return (
-            <div
-                className='color-switcher'
-                style={styleSwitcher}
+            <StyledColorSwitcher
                 onClick={this.setActive}
+                backgroundColor={this.props.color}
+                isActive={this.props.isActive}
             >
-                {' '}
-                ✔{' '}
-            </div>
+                ✔
+            </StyledColorSwitcher>
         );
     }
 }

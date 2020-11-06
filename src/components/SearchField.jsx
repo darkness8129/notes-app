@@ -1,5 +1,34 @@
 import React, { Component } from 'react';
-import '../style/search-field.css';
+import styled from 'styled-components';
+
+const StyledSearchField = styled.div`
+    position: relative;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 250px;
+`;
+
+const SearchInput = styled.input.attrs((props) => ({
+    type: 'text',
+    placeholder: 'Search...',
+}))`
+    &:focus {
+        outline: none;
+    }
+
+    display: block;
+    width: 100%;
+    padding: 10px 10px 10px 30px;
+    border: 1px solid #b0afac;
+    border-radius: 20px;
+`;
+
+const SearchIcon = styled.div`
+    position: absolute;
+    left: 5px;
+    top: 7px;
+    cursor: pointer;
+`;
 
 export default class SearchField extends Component {
     constructor(props) {
@@ -25,22 +54,18 @@ export default class SearchField extends Component {
 
     render() {
         return (
-            <div className='search-field'>
-                <input
-                    className='search-input'
-                    type='text'
+            <StyledSearchField>
+                <SearchInput
                     value={this.state.searchQuery}
-                    placeholder='Search...'
                     onKeyDown={this._handleKeyDown}
                     onChange={this.handleSearchQueryChange}
                 />
-                <div
-                    className='search-icon'
+                <SearchIcon
                     onClick={() => this.props.onSearch(this.state.searchQuery)}
                 >
                     🔍
-                </div>
-            </div>
+                </SearchIcon>
+            </StyledSearchField>
         );
     }
 }
